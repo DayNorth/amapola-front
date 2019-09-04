@@ -44,7 +44,10 @@ class Users extends Component {
     const userlist = await axios.get('http://127.0.0.1:5000/user/all').then(res => {
       return Promise.resolve(res);
     });
-    console.log(userlist.data.users)
+    
+    let { users } = userlist.data.users;
+    this.setState({userList: users});
+    console.log(this.state.userList)
   }
 
   async componentDidMount() {
