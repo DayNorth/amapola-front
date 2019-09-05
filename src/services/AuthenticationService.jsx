@@ -65,18 +65,18 @@ export default class AuthenticationService {
     }
     
     async logout() {
-        const headers = {
-            'Authorization': 'Bearer ' + this.getToken()
-        }
+        // const headers = {
+        //     'Authorization': 'Bearer ' + this.getToken()
+        // }
 
-        console.log(headers)
-        await Axios.post(`${this.domain}/logout`, null, {"headers": headers})
-        .then(res => {
-            console.log(res)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        // console.log(headers)
+        // await Axios.post(`${this.domain}/logout`, null, {"headers": headers})
+        // .then(res => {
+        //     console.log(res)
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
 
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');

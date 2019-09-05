@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row, FormGroup, Button, Input, Label } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, FormGroup, Input, Label } from 'reactstrap';
 import { Form } from 'formik';
 import { SketchPicker } from 'react-color';
 

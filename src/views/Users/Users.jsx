@@ -4,8 +4,6 @@ import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import AuthenticationService from '../../services/AuthenticationService';
 import axios from '../../interceptors';
 
-import usersData from './UsersData'
-
 function UserRow(props) {
   const user = props.user
   const userLink = `/users/${user.id}`
@@ -45,9 +43,9 @@ class Users extends Component {
       return Promise.resolve(res);
     });
     
-    let { users } = userlist.data.users;
+    let users  = userlist.data.users;
     this.setState({userList: users});
-    console.log(this.state.userList)
+    console.log(users)
   }
 
   async componentDidMount() {
@@ -56,7 +54,6 @@ class Users extends Component {
 
 
   render() {
-    const userList = usersData.filter((user) => user.id < 10)
 
     return (
       <div className="animated fadeIn">
@@ -71,16 +68,22 @@ class Users extends Component {
                   <thead>
                     <tr>
                       <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
+                      <th scope="col">username</th>
                       <th scope="col">role</th>
+                      <th scope="col">registered</th>
                       <th scope="col">status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userList.map((user, index) =>
-                      <UserRow key={index} user={user}/>
-                    )}
+                    {this.state.userList.map((user, index) => (
+                      <tr key={index}>
+                        <td>{user.id}</td>
+                        <td>{user.username}</td>
+                        <td>{user.userRole}</td>
+                        <td>{user.created_at}</td>
+                        <td>{user.status}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </CardBody>
