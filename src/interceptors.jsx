@@ -19,6 +19,7 @@ const instance = axios.create({
 });
 
 instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+//instance.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
 
 instance.interceptors.request.use(request => {
     //console.log(request);
@@ -35,6 +36,15 @@ instance.interceptors.response.use(response => {
     return response;
 }, error => {
     console.log(error);
+    // console.log(error.response.status)
+    // switch(error.response.status) {
+    //     case 401:
+    //         window.location.href = '/login';
+    //         break;
+    //     default:
+    //         window.location.href = '/login';
+    //         break;
+    // }
     return Promise.reject(error);
 });
 

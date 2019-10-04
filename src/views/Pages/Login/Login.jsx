@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, } from 'reactstrap';
+import { Container, CardGroup, Alert, Form, FormGroup, InputGroup, InputGroupAddon, InputGroupText,  Card, CardBody, Col, Row, Input, Button, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap';
 import AuthenticationService from '../../../services/AuthenticationService';
 import { withRouter } from 'react-router-dom';
+
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      modal: false,
       validate: {
         usernameState: '',
         validCredentials: '',
@@ -53,6 +55,7 @@ class Login extends Component {
     this.AuthenticationService.login(this.state.username, this.state.password)
     .then(res => {
       if(res.status === 200) {
+        console.log('esta en el login')
         this.props.history.push('/dashboard')
       }
     })
@@ -62,6 +65,11 @@ class Login extends Component {
     });
   }
 
+  toggleModal = () => {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
   render() {
     return (
     <div className="app flex-row align-items-center">
@@ -103,7 +111,7 @@ class Login extends Component {
                           <Button color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Button color="link" className="px-0" onClick={() => this.toggleModal()}>Forgot password?</Button>
                         </Col>
                       </Row>
                     </Form>
@@ -113,6 +121,23 @@ class Login extends Component {
             </Col>
           </Row>
         </Container>
+        <Modal isOpen={this.state.modal} toggle={() => this.toggleModal()} className={this.props.className}>
+          <ModalHeader toggle={() => this.toggleModal()}>Reset password</ModalHeader>
+          <ModalBody>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText><i className="fa fa-envelope fa-fw"></i></InputGroupText>
+                </InputGroupAddon>
+                <Input type="email" name="email" onChange={(e) => this.handleChange(e)} placeholder="registered email" />
+              </InputGroup>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="success" onClick={(e) => this.handleSave(e)}>Save</Button>
+            <Button color="danger" onClick={() => this.toggleModal()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }

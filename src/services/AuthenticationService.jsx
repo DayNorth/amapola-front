@@ -1,10 +1,11 @@
 import decode from 'jwt-decode';
 import Axios from 'axios';
+import constants from '../utils/constants';
 
 export default class AuthenticationService {
 
     constructor(domain) {
-        this.domain = domain || 'http://127.0.0.1:5001';
+        this.domain = domain || constants.AuthenticationServer;
         this.login = this.login.bind(this);
         this.setToken = this.setToken.bind(this);
     }
@@ -12,7 +13,7 @@ export default class AuthenticationService {
     async login(username, password) {
         const headers = {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "http://127.0.0.1:3000/#/",
+            "Access-Control-Allow-Origin": "http://127.0.0.1:3000/",
         }
 
         let self = this;
@@ -65,20 +66,25 @@ export default class AuthenticationService {
     }
     
     async logout() {
-        // const headers = {
-        //     'Authorization': 'Bearer ' + this.getToken()
-        // }
 
-        // console.log(headers)
-        // await Axios.post(`${this.domain}/logout`, null, {"headers": headers})
-        // .then(res => {
-        //     console.log(res)
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        // })
+        const token = this.getToken()
 
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        if(!this.isTokenExpired(token)) {
+            console.log(this.isTokenExpired(token))
+            console.log('token valido se borra del navegador y se agrega al blacklist')
+            const headers = { 'Authorization': 'Bearer ' + token }
+            await Axios.post(`${this.domain}/logout`, null, {"headers": headers})
+            .then( res => {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+            })
+            .catch( err => {
+                console.log(err);
+            });
+        } else {
+            console.log('token invalido, solo se borra del navegador')
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+        }
     }
 }

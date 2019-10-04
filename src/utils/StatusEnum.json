@@ -1,0 +1,8 @@
+
+    {
+        "Active": 1,
+        "Inactive": 2,
+        "Temporal": 3,
+        "Suspended": 4,
+        "License": 5
+    }
